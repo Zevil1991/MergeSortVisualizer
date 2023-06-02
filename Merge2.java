@@ -35,7 +35,7 @@ public class Merge2 extends Application {
     @Override
     public void start(Stage primaryStage) {
         array = generateRandomArray(ARRAY_SIZE);
-        rectangles = createRectangles(array);
+        rectangles = createRectangles(array, false);
 
         HBox root = new HBox(3);
         root.setPadding(new Insets(10));
@@ -57,12 +57,15 @@ public class Merge2 extends Application {
             else{
             count += 1;
             array = ar.get(count);
-            rectangles = createRectangles(array);
+            rectangles = createRectangles(array, false);
             array = ar.get(count);
             root.getChildren().clear();
             root.getChildren().addAll(rectangles);
             if(count+1 == ar.size())
             {
+                rectangles = createRectangles(array, true);
+                root.getChildren().clear();
+                root.getChildren().addAll(rectangles);
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("MergeSort Complete!");
                 alert.setContentText("MergeSort has finished sorting the array");
@@ -75,7 +78,7 @@ public class Merge2 extends Application {
             ar.clear();
             array = generateRandomArray(ARRAY_SIZE);
             count = 0;
-            rectangles = createRectangles(array);
+            rectangles = createRectangles(array, false);
             root.getChildren().clear();
             root.getChildren().addAll(rectangles);
             sort(array.clone(), 0, array.length-1);
@@ -107,7 +110,7 @@ public class Merge2 extends Application {
             {
             count--;
             array = ar.get(count);
-            rectangles = createRectangles(array);
+            rectangles = createRectangles(array, false);
             array = ar.get(count);
             root.getChildren().clear();
             root.getChildren().addAll(rectangles);
@@ -185,13 +188,20 @@ public class Merge2 extends Application {
         }
     }
 
-    private Rectangle[] createRectangles(int[] array) {
+    private Rectangle[] createRectangles(int[] array, boolean d) {
         Rectangle[] rectangles = new Rectangle[array.length];
         int z = findMax(array);
         for (int i = 0; i < array.length; i++) {
             
             Rectangle rectangle = new Rectangle(RECTANGLE_WIDTH, RECTANGLE_HEIGHT_MULTIPLIER*((double)array[i]/z));
-            rectangle.setFill(Color.RED);
+            if (d)
+            {
+                rectangle.setFill(Color.GREEN);
+            }
+            else
+            {
+                rectangle.setFill(Color.RED);
+            }
             rectangles[i] = rectangle;
         }
         return rectangles;
